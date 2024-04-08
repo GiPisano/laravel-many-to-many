@@ -1,0 +1,23 @@
+@import "~bootstrap/scss/bootstrap";
+
+.wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+
+    main {
+        flex-grow: 1;
+    }
+}
+
+.link-index-list{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-trash{
+    background: none;
+    border: none;
+    padding: 0;
+}
