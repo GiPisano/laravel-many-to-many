@@ -27,7 +27,8 @@ class UpdateProjectRequest extends FormRequest
             'title' => 'required|string|max:100',
             'author' => 'required|string|max:50',
             'description' => 'required|string|max:1000',
-            'type_id' => 'required|exists:types,id'
+            'type_id' => 'required|exists:types,id',
+            'technologies' => 'required|exists:technologies,id'
         ];
     }
 
@@ -53,6 +54,7 @@ class UpdateProjectRequest extends FormRequest
 
             'type_id.required' => 'The type is required',
             'type_id.exists' => 'the type must be selected from the proposed options!',
+            'technology.exists' => 'the technologies must be selected from the proposed options!'
         ];
     }
 }

@@ -23,11 +23,16 @@
             </div>
 
         </div>
-        <div class="row g-5">
+        <div class="row">
             <div class="col-12">
                 <h2 class="h4">Description</h2>
                 <p>{{ $project->description }}</p>
-
+            </div>
+            <div class="col-12">
+                <h2 class="h4">Technologies</h2>
+                @foreach ($project->technologies as $technology)
+                    {!! $technology->getTechnology() !!}
+                @endforeach
             </div>
         </div>
     </div>

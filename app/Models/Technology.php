@@ -12,4 +12,8 @@ class Technology extends Model
     public function projects(){
         return $this->belongsToMany(project::class);
     }
+
+    public function getTechnology(){
+        return "<span class='badge' style='background-color:$this->color'>$this->label</span>";
+    }
 }

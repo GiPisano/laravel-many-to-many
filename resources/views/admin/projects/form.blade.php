@@ -52,6 +52,28 @@
                         @enderror
 
                     </div>
+
+                    <div class="col-12 checkbox">
+                        <strong>Technologies: </strong>
+                        @foreach ($technologies as $technology)
+                            <div @class(['is-invalid' => $errors->has('technologies')])>
+                                <input
+                                    {{ in_array($technology->id, old('technologies', $technologies_id ?? [])) ? 'checked' : '' }}
+                                    @class([
+                                        'form-check-input',
+                                        'is-invalid' => $errors->has('technologies'),
+                                    ]) type="checkbox" value=" {{ $technology->id }}"
+                                    id="technologies-{{ $technology->id }}" name="technologies[]">
+                                <label class="form-check-label" for="technologies-{{ $technology->id }}">
+                                    {{ $technology->label }}
+                                </label>
+
+                            </div>
+                        @endforeach
+                        @error('technologies')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                     <div class="col-12">
                         <label class="form-lable" for="description">Description</label>
                         <textarea @class(['form-control', 'is-invalid' => $errors->has('description')]) name="description" rows="5" id="description">{{ old('description') ?? $project->description }}</textarea>

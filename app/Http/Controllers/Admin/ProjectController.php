@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\project;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,8 @@ class ProjectController extends Controller
     {
         $project = new project;
         $types = Type::all();
-       return view('admin.projects.form', compact('project', 'types'));
+        $technologies = Technology::all();
+       return view('admin.projects.form', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -40,13 +42,12 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         $request->validated();
-
         $data= $request->all();
         $project = new project;
-
         $project->fill($data);
-
         $project->save();
+
+        $project->technologies()->attach($data["technologies"]);
 
         return redirect()->route('admin.projects.show', $project);
 
@@ -70,7 +71,9 @@ class ProjectController extends Controller
     public function edit(project $project)
     {
         $types = Type::all();
-        return view('admin.projects.form' , compact('project', 'types'));
+        $technologies = Technology::all();
+        $technologies_id = $project->technologies->pluck('id')->toArray();
+        return view('admin.projects.form' , compact('project', 'types', 'technologies', 'technologies_id'));
     }
 
     /**
