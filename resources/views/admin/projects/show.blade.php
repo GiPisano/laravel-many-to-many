@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="container my-3">
 
         <div class="text-center mt-4">
             <a href="{{ route('admin.projects.index') }}" class="btn btn-primary">Return to the list</a>
@@ -12,6 +12,12 @@
         </div>
         <h1 class="my-4 text-center">{{ $project->title }}</h1>
         <div class="row">
+            @if (!empty($project->image))
+                <div class="col-12">
+                    <img src="{{ asset('storage/' . $project->image) }}" alt="">
+                </div>
+            @endif
+
             <div class="col-12">
                 <h2 class="h4">Author</h2>
                 <p>{{ $project->user->name }}</p>

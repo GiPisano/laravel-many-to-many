@@ -20,17 +20,17 @@
                 @endif
                 <div class="row g-2">
                     <div class="col-6">
-                        <label class="form-lable" for="label">Label</label>
-                        <input @class(['form-control', 'is-invalid' => $errors->has('label')]) value="{{ old('label', $technology->label) }}" technology="text"
+                        <label class="form-label" for="label">Label</label>
+                        <input @class(['form-control', 'is-invalid' => $errors->has('label')]) value="{{ old('label', $technology->label) }}" type="text"
                             name="label" id="label" />
                         {{-- @error('label')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror --}}
                     </div>
                     <div class="col-6">
-                        <label class="form-lable" for="color">Color</label>
-                        <input @class(['form-control', 'is-invalid' => $errors->has('color')]) value="{{ old('color', $technology->color) }}"
-                            technology="color" name="color" id="color" />
+                        <label class="form-label" for="color">Color</label>
+                        <input @class(['form-control', 'is-invalid' => $errors->has('color')]) value="{{ old('color', $technology->color) }}" type="color"
+                            name="color" id="color" />
                         {{-- @error('color')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror --}}

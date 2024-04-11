@@ -8,8 +8,9 @@ use App\Http\Requests\UpdateProjectRequest;
 use App\Models\project;
 use App\Models\Technology;
 use App\Models\Type;
-use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -51,13 +52,22 @@ class ProjectController extends Controller
     {
         $request->validated();
         $data = $request->all();
-
+        $img_path = Storage::put('uploads/projects', $data["image"]);
+        
         $project = new project;
         $project->fill($data);
-        $project->user_id = Auth::id() || Auth::user()->role == 'admin';
+        $project->image = $img_path;
+        $project->user_id = Auth::id();
+
+       
+
         $project->save();
 
         $project->technologies()->attach($data["technologies"]);
+
+        if(Arr::exists($data, 'type')) {
+            $project->type()->attach($data['type']);
+        }
 
         return redirect()->route('admin.projects.show', $project);
 
@@ -101,6 +111,13 @@ class ProjectController extends Controller
         $request->validated();
         $data= $request->all();
         $project->update($data);
+
+        if(Arr::exists($data, "types")) {
+            $project->type()->sync($data["types"]);
+        }else{
+            $project->type()->detach();
+        }
+
 
         return redirect()->route('admin.projects.show', $project);
     }

@@ -13,14 +13,14 @@
 
             <form
                 action="{{ empty($project->id) ? route('admin.projects.store') : route('admin.projects.update', $project) }}"
-                method="POST">
+                method="POST" enctype="multipart/form-data">
                 @csrf
                 @if (!empty($project->id))
                     @method('PATCH')
                 @endif
                 <div class="row g-2">
-                    <div class="col-6">
-                        <label class="form-lable" for="title">Title</label>
+                    <div class="col-4">
+                        <label class="form-label" for="title">Title</label>
                         <input @class(['form-control', 'is-invalid' => $errors->has('title')]) value="{{ old('title', $project->title) }}" type="text"
                             name="title" id="title" />
                         @error('title')
@@ -28,8 +28,13 @@
                         @enderror
                     </div>
 
-                    <div class="col-6">
-                        <label class="form-lable" for="type_id">Type</label>
+                    <div class="col-4">
+                        <label for="image" class="form-label">Image</label>
+                        <input class="form-control" type="file" id="image" name="image">
+                    </div>
+
+                    <div class="col-4">
+                        <label class="form-label" for="type_id">Type</label>
                         <select name="type_id" id="type_id" @class(['form-select', 'is-invalid' => $errors->has('type_id')])>
                             <option value="" class="d-none">select a type</option>
                             @foreach ($types as $type)
@@ -67,7 +72,7 @@
                         @enderror
                     </div>
                     <div class="col-12">
-                        <label class="form-lable" for="description">Description</label>
+                        <label class="form-label" for="description">Description</label>
                         <textarea @class(['form-control', 'is-invalid' => $errors->has('description')]) name="description" rows="5" id="description">{{ old('description') ?? $project->description }}</textarea>
                         @error('description')
                             <div class="invalid-feedback">{{ $message }}</div>

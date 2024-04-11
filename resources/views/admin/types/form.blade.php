@@ -19,7 +19,7 @@
                 @endif
                 <div class="row g-2">
                     <div class="col-6">
-                        <label class="form-lable" for="label">Label</label>
+                        <label class="form-label" for="label">Label</label>
                         <input @class(['form-control', 'is-invalid' => $errors->has('label')]) value="{{ old('label', $type->label) }}" type="text"
                             name="label" id="label" />
                         {{-- @error('label')
@@ -27,7 +27,7 @@
                         @enderror --}}
                     </div>
                     <div class="col-6">
-                        <label class="form-lable" for="color">Color</label>
+                        <label class="form-label" for="color">Color</label>
                         <input @class(['form-control', 'is-invalid' => $errors->has('color')]) value="{{ old('color', $type->color) }}" type="color"
                             name="color" id="color" />
                         {{-- @error('color')
