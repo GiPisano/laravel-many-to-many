@@ -9,6 +9,7 @@ use App\Models\project;
 use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProjectController extends Controller
 {
@@ -17,8 +18,8 @@ class ProjectController extends Controller
      *
      */
     public function index()
-    {
-        $projects = Project::orderBy('id', 'DESC')->paginate(10);
+    {   
+        $projects = Project::orderBy('id', 'DESC')->where('user_id', Auth::id())->paginate(10);
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -42,9 +43,11 @@ class ProjectController extends Controller
     public function store(StoreProjectRequest $request)
     {
         $request->validated();
-        $data= $request->all();
+        $data = $request->all();
+
         $project = new project;
         $project->fill($data);
+        $project->user_id = Auth::id();
         $project->save();
 
         $project->technologies()->attach($data["technologies"]);
@@ -60,7 +63,8 @@ class ProjectController extends Controller
      */
     public function show(project $project)
     {
-       return view('admin.projects.show', compact('project'));
+        if(Auth::id() != $project->user_id) abort(403);
+        return view('admin.projects.show', compact('project'));
     }
 
     /**
@@ -70,6 +74,7 @@ class ProjectController extends Controller
      */
     public function edit(project $project)
     {
+        if(Auth::id() != $project->user_id) abort(403);
         $types = Type::all();
         $technologies = Technology::all();
         $technologies_id = $project->technologies->pluck('id')->toArray();
@@ -84,6 +89,8 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, project $project)
     {
+        if(Auth::id() != $project->user_id) abort(403); 
+        
         $request->validated();
         $data= $request->all();
         $project->update($data);
@@ -98,6 +105,8 @@ class ProjectController extends Controller
      */
     public function destroy(project $project)
     {
+        if(Auth::id() != $project->user_id) abort(403);
+
         $project->delete();
         return redirect()->back();
     }

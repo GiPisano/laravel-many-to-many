@@ -25,7 +25,7 @@
                             <td>{{ $project->id }}</td>
                             <td>{{ $project->title }}</td>
                             <td>{!! $project->type->getBadge() !!}</td>
-                            <td>{{ $project->author }}</td>
+                            <td>{{ $project->user->name }}</td>
                             <td>
                                 <div class="link-index-list">
                                     <a href="{{ route('admin.projects.show', $project) }}">

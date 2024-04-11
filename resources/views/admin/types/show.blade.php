@@ -26,15 +26,13 @@
             <thead>
                 <th>ID</th>
                 <th>Title</th>
-                <th>Author</th>
-                <th></th>
+                <th class="d-flex justify-content-center">Actions</th>
             </thead>
             <tbody>
                 @forelse ($related_projects as $project)
                     <tr>
                         <td>{{ $project->id }}</td>
                         <td>{{ $project->title }}</td>
-                        <td>{{ $project->author }}</td>
                         <td>
                             <div class="link-index-list">
                                 <a href="{{ route('admin.projects.show', $project) }}">

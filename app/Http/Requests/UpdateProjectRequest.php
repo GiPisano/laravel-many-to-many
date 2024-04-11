@@ -25,7 +25,6 @@ class UpdateProjectRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:100',
-            'author' => 'required|string|max:50',
             'description' => 'required|string|max:1000',
             'type_id' => 'required|exists:types,id',
             'technologies' => 'required|exists:technologies,id'
@@ -43,11 +42,7 @@ class UpdateProjectRequest extends FormRequest
             'title.required' => 'The title is required',
             'title.string' => 'the title must be a text',
             'title.max' => 'The title must be :max characters',
-
-            'author.required' => 'The author is required',
-            'author.string' => 'The author must be a text',
-            'author.max' => 'The author must be :max characters',
-
+            
             'description.required' => 'The description is required',
             'description.string' => 'The description must be a text',
             'description.max' => 'The description must be :max characters',

@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-12">
                 <h2 class="h4">Author</h2>
-                <p>{{ $project->author }}</p>
+                <p>{{ $project->user->name }}</p>
             </div>
 
             <div class="col-12">
