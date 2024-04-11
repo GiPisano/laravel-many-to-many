@@ -19,7 +19,14 @@ class ProjectController extends Controller
      */
     public function index()
     {   
-        $projects = Project::orderBy('id', 'DESC')->where('user_id', Auth::id())->paginate(10);
+        $projects = Project::orderBy('id', 'DESC');
+
+        if(Auth::user()->role != 'admin'){
+            $projects->where('user_id', Auth::id());
+        }
+
+        $projects = $projects->paginate(10);
+        
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -47,7 +54,7 @@ class ProjectController extends Controller
 
         $project = new project;
         $project->fill($data);
-        $project->user_id = Auth::id();
+        $project->user_id = Auth::id() || Auth::user()->role == 'admin';
         $project->save();
 
         $project->technologies()->attach($data["technologies"]);
@@ -63,7 +70,7 @@ class ProjectController extends Controller
      */
     public function show(project $project)
     {
-        if(Auth::id() != $project->user_id) abort(403);
+        if(Auth::id() != $project->user_id && Auth::user()->role != 'admin') abort(403);
         return view('admin.projects.show', compact('project'));
     }
 
@@ -74,7 +81,7 @@ class ProjectController extends Controller
      */
     public function edit(project $project)
     {
-        if(Auth::id() != $project->user_id) abort(403);
+        if(Auth::id() != $project->user_id && Auth::user()->role != 'admin') abort(403);
         $types = Type::all();
         $technologies = Technology::all();
         $technologies_id = $project->technologies->pluck('id')->toArray();
@@ -89,7 +96,7 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, project $project)
     {
-        if(Auth::id() != $project->user_id) abort(403); 
+        if(Auth::id() != $project->user_id && Auth::user()->role != 'admin') abort(403); 
         
         $request->validated();
         $data= $request->all();
@@ -105,7 +112,7 @@ class ProjectController extends Controller
      */
     public function destroy(project $project)
     {
-        if(Auth::id() != $project->user_id) abort(403);
+        if(Auth::id() != $project->user_id && Auth::user()->role != 'admin') abort(403);
 
         $project->delete();
         return redirect()->back();

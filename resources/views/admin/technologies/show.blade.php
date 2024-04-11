@@ -1,24 +1,24 @@
 @extends('layouts.app')
 
-@section('title', 'types')
+@section('title', 'technologies')
 
 @section('content')
 
     <div class="container">
 
         <div class="text-center mt-4">
-            <a href="{{ route('admin.types.index') }}" class="btn btn-primary">Return to the list</a>
-            <a href="{{ route('admin.types.edit', $type) }}" class="btn btn-primary">Edit type</a>
+            <a href="{{ route('admin.technologies.index') }}" class="btn btn-primary">Return to the list</a>
+            <a href="{{ route('admin.technologies.edit', $technology) }}" class="btn btn-primary">Edit technology</a>
         </div>
-        <h1 class="my-4 text-center">{{ $type->label }}</h1>
+        <h1 class="my-4 text-center">{{ $technology->label }}</h1>
         <div class="row">
             <div class="col-6">
                 <span class="fs-4">Label: </span>
-                <span>{!! $type->getBadge() !!}</span>
+                <span>{!! $technology->getTechnologyBadge() !!}</span>
             </div>
             <div class="col-6">
                 <span class="fs-4" class="h4">Color: </span>
-                <span>{{ $type->color }}</span>
+                <span>{{ $technology->color }}</span>
             </div>
         </div>
 
@@ -44,7 +44,7 @@
                                     <i class="fa-solid fa-pen fa-lg" style="color: #203fa4;"></i>
                                 </a>
                                 <button class="btn btn-primary btn-trash" data-bs-toggle="modal"
-                                    data-bs-target="#delete-project-{{ $project->id }}-modal" type="button">
+                                    data-bs-target="#delete-project-{{ $project->id }}-modal" technology="button">
                                     <i class="fa-solid fa-trash-can fa-lg" style="color: #e00b04;"></i>
                                 </button>
                             </div>
@@ -76,13 +76,13 @@
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">Delete project
                             {{ $project->title }}</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button technology="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         Are you sure you want to delete this Project? This action cannot be undone.
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button technology="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
 
                         <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
                             @csrf

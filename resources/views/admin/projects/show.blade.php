@@ -31,7 +31,7 @@
             <div class="col-12">
                 <h2 class="h4">Technologies</h2>
                 @foreach ($project->technologies as $technology)
-                    {!! $technology->getTechnology() !!}
+                    {!! $technology->getTechnologyBadge() !!}
                 @endforeach
             </div>
         </div>
