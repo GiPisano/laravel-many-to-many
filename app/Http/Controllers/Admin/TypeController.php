@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Type;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TypeController extends Controller
 {
@@ -13,6 +14,7 @@ class TypeController extends Controller
      */
     public function index()
     {
+        if(Auth::user()->role != 'admin') abort(403);
         $types = Type::orderBy('id', 'DESC')->paginate(10);
         return view('admin.types.index', compact('types'));
     }
@@ -23,6 +25,7 @@ class TypeController extends Controller
      */
     public function create()
     {
+        if(Auth::user()->role != 'admin') abort(403);
         $type = new Type;
        return view('admin.types.form', compact('type'));
     }
@@ -34,7 +37,7 @@ class TypeController extends Controller
      */
     public function store(Request $request)
     {
-
+        if(Auth::user()->role != 'admin') abort(403);
         $data= $request->all();
         $type = new Type;
 
@@ -52,6 +55,7 @@ class TypeController extends Controller
      */
     public function show(Type $type)
     {
+        if(Auth::user()->role != 'admin') abort(403);
         $related_projects = $type->projects()->paginate(10);
         return view('admin.types.show', compact('type', 'related_projects'));
     }
@@ -63,6 +67,7 @@ class TypeController extends Controller
      */
     public function edit(Type $type)
     {
+        if(Auth::user()->role != 'admin') abort(403);
        return view('admin.types.form', compact('type'));
     }
 
@@ -75,6 +80,7 @@ class TypeController extends Controller
      */
     public function update(Request $request, Type $type)
     {
+        if(Auth::user()->role != 'admin') abort(403);
         $data= $request->all();
         $type->update($data);
 
@@ -89,6 +95,7 @@ class TypeController extends Controller
      */
     public function destroy(Type $type)
     {
+        if(Auth::user()->role != 'admin') abort(403);
         foreach($type->projects as $project ){
             $project->delete();
         }
