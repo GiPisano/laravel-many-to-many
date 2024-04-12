@@ -19,15 +19,15 @@ class ProjectController extends Controller
      *
      */
     public function index()
-    {   
+    {
         $projects = Project::orderBy('id', 'DESC');
 
-        if(Auth::user()->role != 'admin'){
+        if (Auth::user()->role != 'admin') {
             $projects->where('user_id', Auth::id());
         }
 
         $projects = $projects->paginate(10);
-        
+
         return view('admin.projects.index', compact('projects'));
     }
 
@@ -40,7 +40,7 @@ class ProjectController extends Controller
         $project = new project;
         $types = Type::all();
         $technologies = Technology::all();
-       return view('admin.projects.form', compact('project', 'types', 'technologies'));
+        return view('admin.projects.form', compact('project', 'types', 'technologies'));
     }
 
     /**
@@ -52,25 +52,25 @@ class ProjectController extends Controller
     {
         $request->validated();
         $data = $request->all();
-        $img_path = Storage::put('uploads/projects', $data["image"]);
-        
+
         $project = new project;
         $project->fill($data);
-        $project->image = $img_path;
+        if (Arr::exists($data, "image")) {
+            $img_path = Storage::put('uploads/projects', $data["image"]);
+            $project->image = $img_path;
+        }
         $project->user_id = Auth::id();
 
-       
+
 
         $project->save();
 
-        $project->technologies()->attach($data["technologies"]);
 
-        if(Arr::exists($data, 'type')) {
-            $project->type()->attach($data['type']);
+        if (Arr::exists($data, 'technologies')) {
+            $project->technologies()->attach($data["technologies"]);
         }
 
         return redirect()->route('admin.projects.show', $project);
-
     }
 
     /**
@@ -80,7 +80,7 @@ class ProjectController extends Controller
      */
     public function show(project $project)
     {
-        if(Auth::id() != $project->user_id && Auth::user()->role != 'admin') abort(403);
+        if (Auth::id() != $project->user_id && Auth::user()->role != 'admin') abort(403);
         return view('admin.projects.show', compact('project'));
     }
 
@@ -91,11 +91,11 @@ class ProjectController extends Controller
      */
     public function edit(project $project)
     {
-        if(Auth::id() != $project->user_id && Auth::user()->role != 'admin') abort(403);
+        if (Auth::id() != $project->user_id && Auth::user()->role != 'admin') abort(403);
         $types = Type::all();
         $technologies = Technology::all();
         $technologies_id = $project->technologies->pluck('id')->toArray();
-        return view('admin.projects.form' , compact('project', 'types', 'technologies', 'technologies_id'));
+        return view('admin.projects.form', compact('project', 'types', 'technologies', 'technologies_id'));
     }
 
     /**
@@ -106,16 +106,26 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, project $project)
     {
-        if(Auth::id() != $project->user_id && Auth::user()->role != 'admin') abort(403); 
-        
+        if (Auth::id() != $project->user_id && Auth::user()->role != 'admin') abort(403);
+
         $request->validated();
-        $data= $request->all();
+        $data = $request->all();
         $project->update($data);
 
-        if(Arr::exists($data, "types")) {
-            $project->type()->sync($data["types"]);
-        }else{
-            $project->type()->detach();
+        if (Arr::exists($data, "image")) {
+            if (!empty($project->image)) {
+                Storage::delete($project->image);
+            }
+            $img_path = Storage::put('uploads/projects', $data["image"]);
+            $project->image = $img_path;
+        }
+
+        $project->save();
+
+        if (Arr::exists($data, "technologies")) {
+            $project->technologies()->sync($data["technologies"]);
+        } else {
+            $project->technologies()->detach();
         }
 
 
@@ -129,7 +139,7 @@ class ProjectController extends Controller
      */
     public function destroy(project $project)
     {
-        if(Auth::id() != $project->user_id && Auth::user()->role != 'admin') abort(403);
+        if (Auth::id() != $project->user_id && Auth::user()->role != 'admin') abort(403);
 
         $project->delete();
         return redirect()->back();

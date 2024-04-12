@@ -12,8 +12,9 @@
         </div>
         <h1 class="my-4 text-center">{{ $project->title }}</h1>
         <div class="row">
+
             @if (!empty($project->image))
-                <div class="col-12">
+                <div class="col">
                     <img src="{{ asset('storage/' . $project->image) }}" alt="">
                 </div>
             @endif

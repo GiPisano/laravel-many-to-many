@@ -30,7 +30,10 @@
 
                     <div class="col-4">
                         <label for="image" class="form-label">Image</label>
-                        <input class="form-control" type="file" id="image" name="image">
+                        <input @class(['form-control', 'is-invalid' => $errors->has('image')]) type="file" id="image" name="image">
+                        @error('image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="col-4">
